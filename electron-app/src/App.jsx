@@ -1,11 +1,36 @@
 // src/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import CodeEditor from './components/CodeEditor';
+import ChatInterface from './components/ChatInterface';
+import './App.css';
 
 export default function App() {
+  const [code, setCode] = useState('// Start coding here...');
+
+  const handleCodeChange = (newCode) => {
+    setCode(newCode);
+  };
+
   return (
     <div className="app">
-      <h1 className="text-xl font-bold">Echooo</h1>
-      {/* You’ll mount CodeEditor and P2PPanel here later */}
+      <header className="app-header">
+        <h1 className="app-title">Echo Code Editor</h1>
+      </header>
+      
+      <div className="main-container">
+        <div className="editor-section">
+          <CodeEditor 
+            value={code}
+            onChange={handleCodeChange}
+            language="javascript"
+            theme="vs-dark"
+          />
+        </div>
+        
+        <div className="chat-section">
+          <ChatInterface />
+        </div>
+      </div>
     </div>
   );
 }

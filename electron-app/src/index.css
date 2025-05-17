@@ -1,7 +1,18 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  color: #333;
 }
+
+/* Import the ChatInterface CSS */
+@import './components/ChatInterface.css';
