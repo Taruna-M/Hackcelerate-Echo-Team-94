@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import CodeEditor from './components/CodeEditor';
 import ChatInterface from './components/ChatInterface';
 import './App.css';
@@ -7,9 +7,10 @@ import './App.css';
 export default function App() {
   const [code, setCode] = useState('// Start coding here...');
 
-  const handleCodeChange = (newCode) => {
+  // Handle code changes from the editor
+  const handleCodeChange = useCallback((newCode) => {
     setCode(newCode);
-  };
+  }, []);
 
   return (
     <div className="app">
@@ -28,7 +29,7 @@ export default function App() {
         </div>
         
         <div className="chat-section">
-          <ChatInterface />
+          <ChatInterface codeValue={code} />
         </div>
       </div>
     </div>

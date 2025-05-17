@@ -18,6 +18,42 @@
   border-bottom: 1px solid #ddd;
 }
 
+.chat-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shared-memory-badge {
+  font-size: 0.75rem;
+  background-color: #3b82f6;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.clear-chat-button {
+  background-color: #34495e;
+  color: white;
+  border: 1px solid #4a6b8a;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clear-chat-button:hover {
+  background-color: #4a6b8a;
+}
+
 .chat-header h2 {
   margin: 0;
   font-size: 18px;
@@ -43,6 +79,90 @@
   gap: 12px;
 }
 
+/* API Key related styles */
+.api-key-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.api-key-container p {
+  margin: 0;
+  color: #333;
+}
+
+.api-key-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.api-key-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.api-key-button {
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.api-key-note {
+  font-size: 12px;
+  color: #666;
+}
+
+.api-key-note a {
+  color: #0078d4;
+  text-decoration: none;
+}
+
+.api-key-note a:hover {
+  text-decoration: underline;
+}
+
+/* Settings footer */
+.settings-footer {
+  padding: 8px 12px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+.settings-link {
+  background: none;
+  border: none;
+  color: #0078d4;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.settings-link:hover {
+  text-decoration: underline;
+}
+
+/* Error message */
+.error-message {
+  background-color: #fdeded;
+  border: 1px solid #f1a5a5;
+  color: #be3333;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* Empty state enhancements */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -51,7 +171,21 @@
   height: 100%;
   color: #666;
   text-align: center;
-  font-style: italic;
+  padding: 20px;
+}
+
+.model-info {
+  margin-top: 16px;
+  font-weight: 500;
+  color: #333;
+  font-style: normal;
+}
+
+.model-description {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
+  font-style: normal;
 }
 
 .message {
@@ -72,6 +206,112 @@
   align-self: flex-start;
   background-color: #e9eaeb;
   color: #333;
+  max-width: 90%;
+}
+
+/* Markdown content styling */
+.markdown-content {
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.markdown-content .markdown-paragraph {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.code-block-wrapper {
+  margin: 12px 0;
+}
+
+.markdown-content h1, 
+.markdown-content h2, 
+.markdown-content h3, 
+.markdown-content h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.markdown-content h1 { font-size: 1.4em; }
+.markdown-content h2 { font-size: 1.3em; }
+.markdown-content h3 { font-size: 1.2em; }
+.markdown-content h4 { font-size: 1.1em; }
+
+.markdown-content ul, 
+.markdown-content ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.markdown-content li {
+  margin-bottom: 4px;
+}
+
+.markdown-content a {
+  color: #0078d4;
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #ddd;
+  padding-left: 12px;
+  color: #555;
+  font-style: italic;
+  margin: 8px 0;
+}
+
+/* Code blocks */
+.code-block-container {
+  margin: 12px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2d2d2d;
+  padding: 6px 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #ddd;
+}
+
+.copy-button {
+  background-color: #383838;
+  color: #ddd;
+  border: none;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.copy-button:hover {
+  background-color: #444;
+}
+
+.code-language {
+  font-weight: bold;
+  color: #bbbbff;
+}
+
+.inline-code {
+  background-color: #f0f0f0;
+  color: #e01e5a;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9em;
 }
 
 .loading {
@@ -113,6 +353,11 @@
   resize: vertical;
   font-family: inherit;
   font-size: 14px;
+}
+
+.input-container textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
 
 .input-container button {
