@@ -10,6 +10,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Settings
   getStoreValue: (key) => ipcRenderer.invoke('store:get', key),
   setStoreValue: (key, value) => ipcRenderer.invoke('store:set', key, value),
+  // File system operations
+  getFileTree: () => ipcRenderer.invoke('file:getFileTree'),
+  openFolder: () => ipcRenderer.invoke('file:openFolder'),
+  readFile: (filePath) => ipcRenderer.invoke('file:readFile', filePath),
+  writeFile: (filePath, content) => ipcRenderer.invoke('file:writeFile', filePath, content),
   // App info
   appInfo: {
     name: 'Echo Code Editor',

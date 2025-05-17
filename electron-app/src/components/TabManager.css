@@ -1,0 +1,96 @@
+/* TabManager.css */
+.tab-container {
+  background-color: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  height: 35px;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
+}
+
+.tabs {
+  display: flex;
+  height: 100%;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  min-width: 120px;
+  max-width: 200px;
+  background-color: #2d2d2d;
+  border-right: 1px solid #3c3c3c;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+
+.tab:hover {
+  background-color: #2a2a2a;
+}
+
+.tab.active {
+  background-color: #1e1e1e;
+  border-top: 1px solid #0e639c;
+}
+
+.tab-content {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tab-icon {
+  margin-right: 5px;
+  font-size: 12px;
+  color: #75beff;
+}
+
+.tab-name {
+  color: #cccccc;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab.active .tab-name {
+  color: #ffffff;
+}
+
+.tab-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 5px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
+  border-radius: 3px;
+}
+
+.tab-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.empty-tabs {
+  height: 35px;
+  background-color: #1e1e1e;
+  color: #cccccc;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #3c3c3c;
+}

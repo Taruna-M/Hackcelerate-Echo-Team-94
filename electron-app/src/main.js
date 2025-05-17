@@ -1,6 +1,7 @@
-const { app, BrowserWindow, protocol } = require('electron');
+const { app, BrowserWindow, protocol, ipcMain } = require('electron');
 const path = require('node:path');
 const { setupSecurityPolicy } = require('./main/securityPolicy');
+const { readFile, writeFile, openFolder, getFileTree } = require('./main/fileSystemHandler');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -36,10 +37,51 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+// Set up IPC handlers for file system operations
+function setupIpcHandlers() {
+  // Get file tree
+  ipcMain.handle('file:getFileTree', async () => {
+    try {
+      return getFileTree();
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+
+  // Open folder dialog
+  ipcMain.handle('file:openFolder', async (event) => {
+    try {
+      const window = BrowserWindow.fromWebContents(event.sender);
+      return await openFolder(window);
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+
+  // Read file
+  ipcMain.handle('file:readFile', async (event, filePath) => {
+    try {
+      return readFile(filePath);
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+
+  // Write file
+  ipcMain.handle('file:writeFile', async (event, filePath, content) => {
+    try {
+      return writeFile(filePath, content);
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  setupIpcHandlers();
   createWindow();
 
   // On OS X it's common to re-create a window in the app when the

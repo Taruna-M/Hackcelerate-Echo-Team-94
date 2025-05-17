@@ -9,15 +9,15 @@ const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
 const setupSecurityPolicy = (mainWindow) => {
   // Set Content Security Policy
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-    // For development mode, we need to allow unsafe-eval for webpack hot-reload
-    const cspDirectives = isDev ? [
-      // Development CSP - more permissive for hot reloading
-      "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: ws: http: https:;",
-      "connect-src 'self' ws: http: https: https://openrouter.ai https://*.openrouter.ai https://*.openai.com https://*.anthropic.com"
-    ] : [
-      // Production CSP - more restrictive
-      "default-src 'self' 'unsafe-inline' data:;", 
-      "connect-src 'self' https://openrouter.ai https://*.openrouter.ai https://*.openai.com https://*.anthropic.com;"
+    const cspDirectives = [
+      "default-src 'self'; " +
+      "script-src 'self' 'unsafe-eval'; " +
+      "connect-src 'self' https://openrouter.ai/api/ https://api.openrouter.ai/ https://*.gcp.cloud.qdrant.io:* https://*.upstash.io; " +
+      "style-src 'self' 'unsafe-inline'; " +
+      "img-src 'self' data: blob:; " +
+      "font-src 'self' data:; " +
+      "worker-src 'self' blob:; " +
+      "frame-src 'self'"
     ];
     
     callback({

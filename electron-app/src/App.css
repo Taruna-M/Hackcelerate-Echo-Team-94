@@ -1,69 +1,126 @@
 /* App.css */
 
+:root {
+  --header-height: 40px;
+  --sidebar-width: 250px;
+  --chat-width: 350px;
+  --primary-color: #007acc;
+  --background-dark: #1e1e1e;
+  --background-sidebar: #252526;
+  --border-color: #3c3c3c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .app {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--background-dark);
+  color: #cccccc;
 }
 
 .app-header {
-  background-color: #282c34;
+  background-color: #333333;
   color: white;
-  padding: 12px 20px;
-  height: 60px;
+  padding: 0 16px;
+  height: var(--header-height);
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
   z-index: 10;
 }
 
 .app-title {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .main-container {
   display: flex;
   flex: 1;
   overflow: hidden;
+  height: calc(100vh - var(--header-height));
 }
 
+/* Sidebar styles */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--background-sidebar);
+  border-right: 1px solid var(--border-color);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Editor section styles */
 .editor-section {
-  flex: 2;
-  height: calc(100vh - 60px);
+  flex: 1;
+  height: 100%;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-dark);
 }
 
+/* Chat section styles */
 .chat-section {
-  flex: 1;
+  width: var(--chat-width);
   min-width: 300px;
   max-width: 450px;
-  height: calc(100vh - 60px);
+  height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  border-left: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
 /* Monaco Editor container styles */
 .monaco-editor-container {
   width: 100%;
-  height: 100%;
+  flex: 1;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-width: 200px;
+    --chat-width: 300px;
+  }
+}
+
+@media (max-width: 900px) {
   .main-container {
     flex-direction: column;
   }
   
-  .editor-section,
+  .sidebar {
+    width: 100%;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .editor-section {
+    height: auto;
+    flex: 2;
+  }
+  
   .chat-section {
-    flex: none;
-    height: 50%;
+    width: 100%;
+    height: auto;
+    flex: 1;
     max-width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border-color);
   }
 }

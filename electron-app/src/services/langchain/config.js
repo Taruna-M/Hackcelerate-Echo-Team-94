@@ -29,7 +29,7 @@ export const LANGCHAIN_CONFIG = {
   // Qdrant Configuration
   qdrant: {
     // Qdrant connection settings (should be env variables in production)
-    url: 'http://localhost:6333',
+    url: 'https://e0b3b61c-7a5a-4d1e-8332-3b1c10fe8276.us-east4-0.gcp.cloud.qdrant.io:6333',
     // Collection name for code context embeddings
     codeContextCollection: 'echo-code-contexts',
     // Collection name for AI memory
@@ -43,10 +43,12 @@ export const LANGCHAIN_CONFIG = {
     // Whether to include code snippets in memory
     includeCodeSnippets: true,
   },
-  
+
   // Prompt Configuration
   prompts: {
     // System message for code assistance
     codeAssistance: 'You are an AI assistant specialized in programming help. You provide clear, concise code suggestions based on the user\'s context. When suggesting code, follow these guidelines:\n\n- Write clean, efficient, and well-commented code\n- Follow standard conventions for the language being used\n- Provide explanations for complex logic\n- Consider error handling and edge cases\n\nYou have access to the user\'s current code context and chat history.'
   }
 };
+//endpoint: primary-rooster-23253.upstash.io
+//password: AVrVAAIjcDFiYTViZjM1ZDlhMzY0NTE2YWMzYzgxNzNhNWZhNTNlZXAxMA

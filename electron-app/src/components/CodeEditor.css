@@ -1,0 +1,105 @@
+/* CodeEditor.css */
+.monaco-editor-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #1e1e1e;
+}
+
+.monaco-editor-container {
+  width: 100%;
+  height: 100%;
+}
+
+.no-file-open {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1e1e1e;
+  z-index: 10;
+}
+
+.no-file-message {
+  text-align: center;
+  color: #cccccc;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.no-file-message h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+
+.no-file-message p {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Status bar at the bottom of the editor */
+.editor-statusbar {
+  height: 22px;
+  background-color: #007acc;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.editor-statusbar-item {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+/* Syntax highlighting enhancements */
+.monaco-editor .current-line {
+  border: none !important;
+  background-color: #282828 !important;
+}
+
+.monaco-editor .margin-view-overlays .current-line-margin {
+  border: none !important;
+  background-color: #282828 !important;
+}
+
+/* Better scrollbar styling */
+.monaco-editor .monaco-scrollable-element .scrollbar {
+  background-color: rgba(121, 121, 121, 0.4) !important;
+}
+
+.monaco-editor .monaco-scrollable-element .slider {
+  background-color: rgba(100, 100, 100, 0.4) !important;
+}
+
+/* Bracket pair colorization */
+.monaco-editor .bracket-highlighting-0 {
+  color: #ffd700 !important;
+}
+
+.monaco-editor .bracket-highlighting-1 {
+  color: #da70d6 !important;
+}
+
+.monaco-editor .bracket-highlighting-2 {
+  color: #87cefa !important;
+}
+
+.monaco-editor .bracket-highlighting-3 {
+  color: #fa8072 !important;
+}
+
+.monaco-editor .bracket-highlighting-4 {
+  color: #7cfc00 !important;
+}
+
+.monaco-editor .bracket-highlighting-5 {
+  color: #ff8c00 !important;
+}

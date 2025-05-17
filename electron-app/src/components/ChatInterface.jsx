@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 // Import LangChain service
 import { createLangChainService } from '../services/langchain';
+// Import file reference components
+import FileReferencePanel from './FileReferencePanel';
 // We still need these for API key management and available models
 import { getAvailableModels } from '../services/openRouterService';
 import { saveApiKey, getApiKey } from '../services/storageService';
@@ -73,7 +75,7 @@ const MessageContent = ({ content }) => {
   );
 };
 
-const ChatInterface = ({ codeValue = '' }) => {
+const ChatInterface = ({ codeValue = '', files = [] }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [selectedModel, setSelectedModel] = useState('deepseek/deepseek-v3-base:free');
@@ -81,6 +83,7 @@ const ChatInterface = ({ codeValue = '' }) => {
   const [error, setError] = useState(null);
   const [apiKey, setApiKey] = useState(getApiKey('openrouter') || '');
   const [showApiKeyInput, setShowApiKeyInput] = useState(!getApiKey('openrouter'));
+  const [fileReferences, setFileReferences] = useState([]);
   const messagesEndRef = useRef(null);
   
   // Create and store LangChain service instance
@@ -184,6 +187,11 @@ const ChatInterface = ({ codeValue = '' }) => {
     }
   };
 
+  // Handle file reference changes
+  const handleFileReferencesChange = useCallback((selectedFiles) => {
+    setFileReferences(selectedFiles);
+  }, []);
+
   // Handle sending messages
   const handleSendMessage = async () => {
     if (!input.trim()) return;
@@ -206,9 +214,38 @@ const ChatInterface = ({ codeValue = '' }) => {
         throw new Error('LangChain service not initialized');
       }
       
-      // Send message through LangChain service
+      // Prepare file references content if any files are selected
+      let fileReferencesContent = '';
+      if (fileReferences.length > 0) {
+        fileReferencesContent = '\n\nReference Files:\n';
+        for (const file of fileReferences) {
+          try {
+            // In a real implementation, this would get the file content from the file system
+            // For now, we'll use the file.content property if it exists or try to load it
+            let content = file.content;
+            
+            if (!content && window.electronAPI && window.electronAPI.readFile) {
+              try {
+                const result = await window.electronAPI.readFile(file.path);
+                content = result.content;
+              } catch (err) {
+                console.error(`Error reading file ${file.path}:`, err);
+                content = `// Error loading file: ${err.message}`;
+              }
+            }
+            
+            // Add file content to references
+            const extension = file.name.split('.').pop().toLowerCase();
+            fileReferencesContent += `\n\n--- ${file.name} ---\n\`\`\`${extension}\n${content || 'File content not available'}\n\`\`\``;
+          } catch (err) {
+            console.error(`Error processing file reference ${file.path}:`, err);
+          }
+        }
+      }
+      
+      // Send message through LangChain service with file references
       const response = await langChainServiceRef.current.sendMessage(
-        input,
+        fileReferencesContent ? `${input}\n${fileReferencesContent}` : input,
         apiKey
       );
 
@@ -329,11 +366,21 @@ const ChatInterface = ({ codeValue = '' }) => {
         </div>
       )}
 
+      {/* File Reference Panel */}
+      {!showApiKeyInput && (
+        <FileReferencePanel
+          files={files}
+          onFileReferencesChange={handleFileReferencesChange}
+        />
+      )}
+
       <div className="input-container">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about your code..."
+          placeholder={fileReferences.length > 0 
+            ? `Ask about your code with ${fileReferences.length} file reference${fileReferences.length > 1 ? 's' : ''}...` 
+            : "Ask about your code..."}
           disabled={showApiKeyInput || isLoading}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
