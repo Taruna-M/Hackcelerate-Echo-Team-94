@@ -232,6 +232,39 @@ export default function App() {
     setIsOfflineMode(prev => !prev);
   };
 
+  // Effect to handle file content changes from chat interface
+  useEffect(() => {
+    const handleFileContentChanged = (event) => {
+      const { filePath, content } = event.detail;
+      
+      // Update file contents
+      setFileContents(prev => ({
+        ...prev,
+        [filePath]: content
+      }));
+      
+      // If this file is open in a tab, update the tab content
+      setOpenFiles(prev => 
+        prev.map(file => 
+          file.path === filePath ? { ...file, content } : file
+        )
+      );
+      
+      // If this is the active file, update the current code
+      if (activeFile && activeFile.path === filePath) {
+        setCurrentCode(content);
+      }
+    };
+    
+    // Add event listener
+    window.addEventListener('fileContentChanged', handleFileContentChanged);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('fileContentChanged', handleFileContentChanged);
+    };
+  }, [activeFile]);
+
   // Effect to initialize the app and load file tree
   useEffect(() => {
     const loadInitialFiles = async () => {

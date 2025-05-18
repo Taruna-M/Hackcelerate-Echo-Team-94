@@ -9,9 +9,11 @@ import FileReferencePanel from './FileReferencePanel';
 // We still need these for API key management and available models
 import { getAvailableModels } from '../services/openRouterService';
 import { saveApiKey, getApiKey } from '../services/storageService';
+// Import modal for code application
+import CodeApplyModal from './CodeApplyModal';
 
 // Component to render message content with markdown and code highlighting
-const MessageContent = ({ content }) => {
+const MessageContent = ({ content, files, onApplyCode }) => {
   // Detect if content is just a simple string without markdown
   const hasMarkdown = /[*#`\[\]_>-]/.test(content) || content.includes('\n');
   
@@ -33,19 +35,50 @@ const MessageContent = ({ content }) => {
             
             // For code blocks (not inline)
             if (!inline) {
+              const codeContent = String(children).replace(/\n$/, '');
+              
+              // Check if this is actual code that can be applied to a file
+              // Don't show APPLY button for simple file extensions or very short snippets
+              const isActualCode = (() => {
+                // If it's just a file extension like .docx, .pdf, etc.
+                if (/^\.[a-z0-9]+$/i.test(codeContent.trim())) {
+                  return false;
+                }
+                
+                // If it's too short and doesn't contain any programming constructs
+                if (codeContent.trim().length < 10 && 
+                    !/(function|var|let|const|if|for|while|class|import|export|return|=>)/i.test(codeContent)) {
+                  return false;
+                }
+                
+                return true;
+              })();
+              
               return (
                 <div className="code-block-wrapper">
                   <div className="code-block-container">
                     <div className="code-block-header">
                       <span className="code-language">{language}</span>
-                      <button
-                        className="copy-button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(String(children).replace(/\n$/, ''));
-                        }}
-                      >
-                        Copy
-                      </button>
+                      <div className="code-block-actions">
+                        {isActualCode && (
+                          <button
+                            className="apply-button"
+                            onClick={() => onApplyCode(codeContent, language)}
+                            title="Apply this code to a file"
+                          >
+                            APPLY
+                          </button>
+                        )}
+                        <button
+                          className="copy-button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(codeContent);
+                          }}
+                          title="Copy to clipboard"
+                        >
+                          Copy
+                        </button>
+                      </div>
                     </div>
                     <SyntaxHighlighter
                       style={tomorrow}
@@ -53,7 +86,7 @@ const MessageContent = ({ content }) => {
                       PreTag="div"
                       {...props}
                     >
-                      {String(children).replace(/\n$/, '')}
+                      {codeContent}
                     </SyntaxHighlighter>
                   </div>
                 </div>
@@ -84,6 +117,8 @@ const ChatInterface = ({ codeValue = '', files = [] }) => {
   const [apiKey, setApiKey] = useState(getApiKey('openrouter') || '');
   const [showApiKeyInput, setShowApiKeyInput] = useState(!getApiKey('openrouter'));
   const [fileReferences, setFileReferences] = useState([]);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [codeToApply, setCodeToApply] = useState({ code: '', language: '' });
   const messagesEndRef = useRef(null);
   
   // Create and store LangChain service instance
@@ -286,6 +321,38 @@ const ChatInterface = ({ codeValue = '', files = [] }) => {
     setSelectedModel(e.target.value);
   };
 
+  // Handle code application
+  const handleApplyCode = (code, language) => {
+    setCodeToApply({ code, language });
+    setIsApplyModalOpen(true);
+  };
+
+  // Handle code application result
+  const handleCodeApplied = (result) => {
+    // Add a system message about the code application
+    const message = result.success
+      ? `✅ Code successfully ${result.operation === 'create' ? 'created in' : result.operation === 'replace' ? 'replaced in' : result.operation === 'append' ? 'appended to' : 'prepended to'} ${result.path}`
+      : `❌ Failed to apply code to ${result.path}: ${result.error}`;
+    
+    setMessages(prev => [...prev, { role: 'system', content: message }]);
+    scrollToBottom();
+    
+    // If successful and we have content, notify parent component about the file change
+    if (result.success && result.content) {
+      // Find the CustomEvent constructor
+      const event = new CustomEvent('fileContentChanged', {
+        detail: {
+          filePath: result.path,
+          content: result.content,
+          operation: result.operation
+        }
+      });
+      
+      // Dispatch the event
+      window.dispatchEvent(event);
+    }
+  };
+
   return (
     <div className="chat-interface">
       <div className="chat-header">
@@ -350,9 +417,13 @@ const ChatInterface = ({ codeValue = '', files = [] }) => {
             messages.map((message, index) => (
               <div 
                 key={index} 
-                className={`message ${message.role === 'user' ? 'user-message' : 'assistant-message'}`}
+                className={`message ${message.role === 'user' ? 'user-message' : message.role === 'system' ? 'system-message' : 'assistant-message'}`}
               >
-                <MessageContent content={message.content} />
+                <MessageContent 
+                  content={message.content} 
+                  files={files}
+                  onApplyCode={handleApplyCode}
+                />
               </div>
             ))
           )}
@@ -406,6 +477,16 @@ const ChatInterface = ({ codeValue = '', files = [] }) => {
           {showApiKeyInput ? 'Cancel' : 'Change API Key'}
         </button>
       </div>
+
+      {/* Code Apply Modal */}
+      <CodeApplyModal
+        isOpen={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+        code={codeToApply.code}
+        language={codeToApply.language}
+        files={files}
+        onApply={handleCodeApplied}
+      />
     </div>
   );
 };

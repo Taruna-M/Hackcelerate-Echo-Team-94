@@ -90,3 +90,7 @@ typings/
 
 # Electron-Forge
 out/
+
+/src/components/CodeEditor2.jsx
+/src/components/P2PSync.jsx
+/src/components/ShareInvite.jsx
