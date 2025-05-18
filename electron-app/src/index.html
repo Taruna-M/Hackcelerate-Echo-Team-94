@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <title>Hello World!</title>
 
+    <!-- ✅ Add this -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src blob: 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost:1234 wss://localhost:1234 wss://demos.yjs.dev https://unpkg.com; img-src 'self' data: blob:; font-src 'self' data:;">
   </head>
-  <body id="root">
+
+  <!-- ⚠️ Fix the body tag: this should contain a div, not be the root -->
+  <body>
+    <div id="root"></div>
   </body>
 </html>

@@ -3,13 +3,14 @@
   "productName": "electron-app",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": ".webpack/main",
+  "main": ".webpack/main/main.js",
   "scripts": {
-    "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build": "webpack --config webpack.main.config.js && webpack --config webpack.renderer.config.js",
+    "start": "npm run build && electron ."
   },
   "keywords": [],
   "author": {
@@ -33,15 +34,50 @@
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
     "babel-loader": "^10.0.0",
     "css-loader": "^6.11.0",
-    "electron": "36.2.1",
+    "electron": "^36.2.1",
+    "events": "^3.3.0",
+    "file-loader": "^6.2.0",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "node-loader": "^2.1.0",
-    "style-loader": "^3.3.4"
+    "node-polyfill-webpack-plugin": "^4.1.0",
+    "path-browserify": "^1.0.1",
+    "stream-browserify": "^3.0.0",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "electron-serve": "^2.1.1",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
+    "monaco-editor": "^0.52.2",
     "peerjs": "^1.5.4",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  }
+    "react-dom": "^19.1.0",
+    "y-monaco": "^0.1.6",
+    "y-websocket": "^3.0.0",
+    "yjs": "^13.6.27"
+  },
+  "plugins": [
+  [
+    "@electron-forge/plugin-webpack",
+    {
+      "mainConfig": "./webpack.main.config.js",
+      "renderer": {
+        "config": "./webpack.renderer.config.js",
+        "entryPoints": [
+          {
+            "html": "./src/index.html",
+            "js": "./src/renderer.js",
+            "name": "main_window",
+            "preload": {
+              "js": "./src/preload.js"
+            }
+          }
+        ]
+      }
+    }
+  ]
+]
+
 }
