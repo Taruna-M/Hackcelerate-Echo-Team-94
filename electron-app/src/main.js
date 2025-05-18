@@ -2,6 +2,7 @@ const { app, BrowserWindow, protocol, ipcMain } = require('electron');
 const path = require('node:path');
 const { setupSecurityPolicy } = require('./main/securityPolicy');
 const { readFile, writeFile, openFolder, getFileTree } = require('./main/fileSystemHandler');
+const { executeCommand, killProcess, killAllProcesses } = require('./main/terminalHandler');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -37,7 +38,7 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
-// Set up IPC handlers for file system operations
+// Set up IPC handlers for file system operations and terminal
 function setupIpcHandlers() {
   // Get file tree
   ipcMain.handle('file:getFileTree', async () => {
@@ -71,6 +72,34 @@ function setupIpcHandlers() {
   ipcMain.handle('file:writeFile', async (event, filePath, content) => {
     try {
       return writeFile(filePath, content);
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+  
+  // Terminal command execution
+  ipcMain.handle('terminal:executeCommand', async (event, command) => {
+    try {
+      const window = BrowserWindow.fromWebContents(event.sender);
+      return executeCommand(window, command);
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+  
+  // Kill terminal process
+  ipcMain.handle('terminal:killProcess', async (event, processId) => {
+    try {
+      return killProcess(processId);
+    } catch (error) {
+      return { error: error.message };
+    }
+  });
+  
+  // Kill all terminal processes
+  ipcMain.handle('terminal:killAllProcesses', async () => {
+    try {
+      return killAllProcesses();
     } catch (error) {
       return { error: error.message };
     }

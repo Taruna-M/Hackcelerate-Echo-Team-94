@@ -4,6 +4,8 @@ import CodeEditor from './components/CodeEditor';
 import ChatInterface from './components/ChatInterface';
 import FileExplorer from './components/FileExplorer';
 import TabManager from './components/TabManager';
+import BottomPanel from './components/BottomPanel';
+import StatusBar from './components/StatusBar';
 import './App.css';
 
 export default function App() {
@@ -166,24 +168,28 @@ export default function App() {
           />
         </div>
         
-        <div className="editor-section">
-          <TabManager 
-            tabs={openFiles}
-            activeTab={activeFile}
-            onTabSelect={handleTabSelect}
-            onTabClose={handleTabClose}
-          />
+        <div className="editor-container">
+          <div className="editor-section">
+            <TabManager 
+              tabs={openFiles}
+              activeTab={activeFile}
+              onTabSelect={handleTabSelect}
+              onTabClose={handleTabClose}
+            />
+            
+            <CodeEditor 
+              files={openFiles.map(file => ({
+                ...file,
+                content: fileContents[file.path] || ''
+              }))}
+              activeFile={activeFile}
+              onChange={handleCodeChange}
+              onSave={handleSaveFile}
+              theme="vs-dark"
+            />
+          </div>
           
-          <CodeEditor 
-            files={openFiles.map(file => ({
-              ...file,
-              content: fileContents[file.path] || ''
-            }))}
-            activeFile={activeFile}
-            onChange={handleCodeChange}
-            onSave={handleSaveFile}
-            theme="vs-dark"
-          />
+          <BottomPanel />
         </div>
         
         <div className="chat-section">
@@ -193,6 +199,8 @@ export default function App() {
           />
         </div>
       </div>
+      
+      <StatusBar />
     </div>
   );
 }

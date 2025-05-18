@@ -60,10 +60,20 @@
   flex-shrink: 0;
 }
 
+/* Editor container styles */
+.editor-container {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-dark);
+}
+
 /* Editor section styles */
 .editor-section {
   flex: 1;
-  height: 100%;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -110,9 +120,13 @@
     border-bottom: 1px solid var(--border-color);
   }
   
-  .editor-section {
+  .editor-container {
     height: auto;
     flex: 2;
+  }
+  
+  .editor-section {
+    flex: 1;
   }
   
   .chat-section {

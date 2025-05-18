@@ -15,6 +15,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openFolder: () => ipcRenderer.invoke('file:openFolder'),
   readFile: (filePath) => ipcRenderer.invoke('file:readFile', filePath),
   writeFile: (filePath, content) => ipcRenderer.invoke('file:writeFile', filePath, content),
+  // Terminal operations
+  executeCommand: (command) => ipcRenderer.invoke('terminal:executeCommand', command),
+  killProcess: (processId) => ipcRenderer.invoke('terminal:killProcess', processId),
+  killAllProcesses: () => ipcRenderer.invoke('terminal:killAllProcesses'),
+  onTerminalOutput: (callback) => ipcRenderer.on('terminal:output', callback),
+  removeTerminalListeners: () => {
+    ipcRenderer.removeAllListeners('terminal:output');
+  },
   // App info
   appInfo: {
     name: 'Echo Code Editor',
