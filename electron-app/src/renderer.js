@@ -32,6 +32,30 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+// Suppress ResizeObserver loop limit exceeded error
+// This is a common error with Monaco Editor and doesn't affect functionality
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  if (args[0] && args[0].includes && args[0].includes('ResizeObserver loop')) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
+// Add global error handler for uncaught errors
+window.addEventListener('error', (event) => {
+  // Log the error but prevent it from showing in the UI if it's a ResizeObserver error
+  if (event.message && event.message.includes('ResizeObserver loop')) {
+    event.preventDefault();
+    return;
+  }
+});
+
+// Initialize the app
 const root = createRoot(document.getElementById('root'));
 root.render(<App />);
+
+// Log application start
+console.log('Echo Code Editor renderer started');
+
 

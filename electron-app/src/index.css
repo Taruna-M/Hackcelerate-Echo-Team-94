@@ -1,7 +1,27 @@
+/* Use system fonts to avoid loading errors */
+
+/* Use system fonts as fallbacks */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1e1e1e; /* Dark theme by default */
+  color: #cccccc;
 }
+
+/* Monaco editor font settings */
+.monaco-editor {
+  font-family: 'Fira Code', Consolas, 'Courier New', monospace !important;
+  font-feature-settings: 'liga' 1, 'calt' 1; /* Enable ligatures */
+}
+
+/* Import component CSS */
+@import './components/ChatInterface.css';

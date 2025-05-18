@@ -38,10 +38,18 @@
     "style-loader": "^3.3.4"
   },
   "dependencies": {
+    "@qdrant/js-client-rest": "^1.14.0",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
+    "file-loader": "^6.2.0",
+    "langchain": "^0.3.26",
+    "monaco-editor": "^0.52.2",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "peerjs": "^1.5.4",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^15.6.1",
+    "redis": "^5.0.1"
   }
 }
