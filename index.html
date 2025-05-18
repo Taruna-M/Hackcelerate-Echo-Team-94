@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Electron IDE</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="ide-container">
+            <!-- File Explorer Panel -->
+            <div class="panel file-explorer">
+                <div class="panel-header">
+                    <h3>Explorer</h3>
+                </div>
+                <div id="file-tree"></div>
+            </div>
+
+            <!-- Main Editor Area -->
+            <div class="panel editor-area">
+                <div class="tabs-container" id="editor-tabs"></div>
+                <div id="monaco-editor"></div>
+            </div>
+
+            <!-- Bottom Panel -->
+            <div class="panel bottom-panel">
+                <div class="panel-tabs">
+                    <button class="tab-button active" data-panel="terminal">Terminal</button>
+                    <button class="tab-button" data-panel="problems">Problems</button>
+                    <button class="tab-button" data-panel="output">Output</button>
+                    <button class="tab-button" data-panel="debug">Debug Console</button>
+                    <button class="tab-button" data-panel="ports">Ports</button>
+                </div>
+                <div class="panel-content">
+                    <div id="terminal" class="panel-pane active"></div>
+                    <div id="problems" class="panel-pane"></div>
+                    <div id="output" class="panel-pane"></div>
+                    <div id="debug" class="panel-pane"></div>
+                    <div id="ports" class="panel-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="dist/bundle.js"></script>
+</body>
+</html> 
