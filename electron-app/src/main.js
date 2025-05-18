@@ -112,7 +112,9 @@ function setupIpcHandlers() {
 app.whenReady().then(() => {
   setupIpcHandlers();
   createWindow();
-
+  setTimeout(() => {
+    createWindow(); // Second peer window
+  }, 1000); // Small delay to avoid race conditions
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   app.on('activate', () => {

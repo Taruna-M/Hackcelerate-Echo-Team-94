@@ -4,6 +4,7 @@
   height: 100%;
   position: relative;
   background-color: #1e1e1e;
+  overflow: visible; /* Allow P2P button to be visible outside the wrapper */
 }
 
 .monaco-editor-container {
@@ -102,4 +103,42 @@
 
 .monaco-editor .bracket-highlighting-5 {
   color: #ff8c00 !important;
+}
+
+/* P2P Button and Panel Styles */
+.p2p-toggle-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  background-color: #2196F3;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.p2p-toggle-button:hover {
+  background-color: #1976D2;
+}
+
+.p2p-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(17, 24, 39, 0.95);
+  color: white;
+  padding: 1rem;
+  z-index: 9998;
+  transition: transform 0.3s ease-in-out;
+}
+
+.p2p-panel.hidden {
+  transform: translateY(-100%);
 }

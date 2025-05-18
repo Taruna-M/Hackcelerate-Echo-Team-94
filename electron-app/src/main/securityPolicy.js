@@ -12,7 +12,7 @@ const setupSecurityPolicy = (mainWindow) => {
     const cspDirectives = [
       "default-src 'self'; " +
       "script-src 'self' 'unsafe-eval'; " +
-      "connect-src 'self' https://openrouter.ai/api/ https://api.openrouter.ai/ https://*.gcp.cloud.qdrant.io:* https://*.upstash.io; " +
+      "connect-src 'self' https://openrouter.ai/api/ https://api.openrouter.ai/ https://*.gcp.cloud.qdrant.io:* https://*.upstash.io https://0.peerjs.com/peerjs/id wss://0.peerjs.com https://*.supabase.co wss://*.supabase.co; " +
       "style-src 'self' 'unsafe-inline'; " +
       "img-src 'self' data: blob:; " +
       "font-src 'self' data:; " +
